@@ -1,0 +1,2 @@
+include MsPAC/bash/*
+include MsPAC/python/*

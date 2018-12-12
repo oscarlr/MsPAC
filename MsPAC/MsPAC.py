@@ -3,7 +3,7 @@ import os
 import sys
 import ConfigParser
 from string import Template
-from cluster.lsf import Lsf
+from lsf.lsf import Lsf
 
 class Pipeline(object):
     def __init__(self,configfile,step):
