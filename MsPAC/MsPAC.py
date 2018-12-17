@@ -37,6 +37,10 @@ class Pipeline(object):
         self.max_phased_window = None
         self.padding_size = None
 
+        ### prep reads only params
+        self.raw_reads_in_bam_format = None
+        self.raw_reads_directory = None
+
         #### assembly only params
         ## User optional input
         self.min_phased_block = None
@@ -44,7 +48,9 @@ class Pipeline(object):
         self.haps_to_assemble = None
         self.assembly_directory = None
         self.flanking_length = None
-        self.fastq_file = None
+        ## Non user options
+        self.assembly = None
+
 
     def set_options(self,pipeline_options):
         for pipeline_option, option_input in pipeline_options:
@@ -101,10 +107,22 @@ class Pipeline(object):
              ("haps_to_assemble",config.get("Assembly params",'Comma-seperated list of haplotypes')),
              ("phased_bamfile",os.path.abspath(config.get("Phase-bam params",'output phased bamfile'))),
              ("flanking_length",int(config.get("Assembly params",'Flanking length'))),
-             ("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory'))),
-             ("fastq_file",config.get("Assembly params",'fastq'))]
+             ("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory')))]
         self.set_options(pipeline_options)
         self.phase_bam_dependent_options()
+        self.assembly_dependent_options()
+
+    def prep_reads_configure(self,config):
+        pipeline_options  = \
+            [("raw_reads_in_bam_format",os.path.abspath(config.get("Prep reads params",'BAM fofn'))),
+             ("raw_reads_directory",os.path.abspath(config.get("Prep reads params",'Raw reads directory'))),
+             ("phased_bamfile",config.get("Phase-bam params",'output phased bamfile'))]
+        self.set_options(pipeline_options)
+
+    def clean_assembly_configure(self,config):
+        pipeline_options  = \
+            [("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory')))]
+        self.set_options(pipeline_options)
         self.assembly_dependent_options()
 
     def configure(self):
@@ -114,7 +132,11 @@ class Pipeline(object):
         if self.step == "phase-bam":
             self.phase_bam_configure(config)
         if self.step == "assembly":
-            self.assembly_configure(config)            
+            self.assembly_configure(config)
+        if self.step == "prep-reads":
+            self.prep_reads_configure(config)
+        if self.step == "clean-assembly":
+            self.clean_assembly_configure(config)
         #self.set_options(pipeline_options)
         #self.create_directory(self.directory)
         #self.set_dependent_options()
@@ -185,13 +207,21 @@ class Pipeline(object):
             print "Assigning reads to haplotypes..."
             assign_reads_to_haplotype = HaplotypeAssignment(self.configfile)
             assign_reads_to_haplotype.run()
+        elif self.step == "prep-reads":
+            from prepping_reads import PrepReads
+            print "Prepping reads..."
+            prep_reads = PrepReads(self.configfile)
+            prep_reads.run()
         elif self.step == "assembly":
             from assemble_haplotype import HaplotypeAssembly
             print "Assembling haplotypes..."
             assemble_haps = HaplotypeAssembly(self.configfile)
             assemble_haps.run()
-        elif self.step == "clean-assembly":
-            pass
+        elif self.step == "clean-assembly":            
+            from clean_assembly import CleanAssembly
+            print "Cleaning assembly..."
+            clean_haps = CleanAssembly(self.configfile)
+            clean_haps.run()
         elif self.step == "sv-calling":
             pass
         else:
