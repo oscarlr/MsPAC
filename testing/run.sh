@@ -25,3 +25,4 @@ fi
 cd -
 
 MsPAC phase-bam run.cfg
+MsPAC prep-reads run.cfg
