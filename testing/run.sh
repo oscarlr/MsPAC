@@ -22,6 +22,8 @@ then
     curl -O https://rodrio10.u.hpc.mssm.edu/MsPAC/test.vcf.gz.tbi
 fi
 
+ls reads.bam > reads.fofn
+
 cd -
 
 MsPAC phase-bam run.cfg
