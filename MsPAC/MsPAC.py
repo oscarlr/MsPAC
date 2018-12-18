@@ -37,7 +37,7 @@ class Pipeline(object):
         self.max_phased_window = None
         self.padding_size = None
 
-        ### prep reads only params
+        #### prep reads only params
         self.raw_reads_in_bam_format = None
         self.raw_reads_directory = None
 
@@ -49,8 +49,19 @@ class Pipeline(object):
         self.assembly_directory = None
         self.flanking_length = None
         ## Non user options
-        self.assembly = None
+        self.hap0_assembly_fa = None
+        self.hap0_assembly_fq = None
+        self.hap1_assembly_fa = None
+        self.hap1_assembly_fq = None
+        self.hap2_assembly_fa = None
+        self.hap2_assembly_fq = None
 
+        #### sv calling only params 
+        self.sv_calling_directory = None
+        self.reference = None
+        ## Non user options
+        self.hap1_assembly_split_fq = None
+        self.hap2_assembly_split_fq = None
 
     def set_options(self,pipeline_options):
         for pipeline_option, option_input in pipeline_options:
@@ -97,7 +108,12 @@ class Pipeline(object):
         #self.phase_bam_dependent_options()
 
     def assembly_dependent_options(self):
-        self.assembly = "%s/assembly.fasta" % self.assembly_directory
+        self.hap0_assembly_fa = "%s/hap0_assembly.fasta" % self.assembly_directory
+        self.hap0_assembly_fq = "%s/hap0_assembly.fastq" % self.assembly_directory
+        self.hap1_assembly_fa = "%s/hap1_assembly.fasta" % self.assembly_directory
+        self.hap1_assembly_fq = "%s/hap1_assembly.fastq" % self.assembly_directory
+        self.hap2_assembly_fa = "%s/hap2_assembly.fasta" % self.assembly_directory
+        self.hap2_assembly_fq = "%s/hap2_assembly.fastq" % self.assembly_directory
 
     def assembly_configure(self,config):
         pipeline_options  = \
@@ -107,6 +123,7 @@ class Pipeline(object):
              ("haps_to_assemble",config.get("Assembly params",'Comma-seperated list of haplotypes')),
              ("phased_bamfile",os.path.abspath(config.get("Phase-bam params",'output phased bamfile'))),
              ("flanking_length",int(config.get("Assembly params",'Flanking length'))),
+             ("raw_reads_directory",os.path.abspath(config.get("Prep reads params",'Raw reads directory'))), #ugh
              ("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory')))]
         self.set_options(pipeline_options)
         self.phase_bam_dependent_options()
@@ -119,11 +136,19 @@ class Pipeline(object):
              ("phased_bamfile",config.get("Phase-bam params",'output phased bamfile'))]
         self.set_options(pipeline_options)
 
-    def clean_assembly_configure(self,config):
+    def sv_calling_dependent_options(self):
+        self.hap1_assembly_split_fq = "%s/hap1_assembly_split.fastq" % self.sv_calling_directory
+        self.hap2_assembly_split_fq = "%s/hap2_assembly_split.fastq" % self.sv_calling_directory
+
+    def sv_calling_configure(self,config):
         pipeline_options  = \
-            [("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory')))]
+            [("sv_calling_directory",os.path.abspath(config.get("SV calling params",'SV calling directory'))),
+             ("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory'))),
+             ("reference",os.path.abspath(config.get("SV calling params",'reference')))]
         self.set_options(pipeline_options)
+        self.sv_calling_dependent_options()
         self.assembly_dependent_options()
+        self.create_directory(self.sv_calling_directory)
 
     def configure(self):
         config = ConfigParser.RawConfigParser()
@@ -135,12 +160,8 @@ class Pipeline(object):
             self.assembly_configure(config)
         if self.step == "prep-reads":
             self.prep_reads_configure(config)
-        if self.step == "clean-assembly":
-            self.clean_assembly_configure(config)
-        #self.set_options(pipeline_options)
-        #self.create_directory(self.directory)
-        #self.set_dependent_options()
-        #self.set_optional_options(config)
+        if self.step == "sv-calling":
+            self.sv_calling_configure(config)
 
     def create_directory(self,directory):
         if not os.path.exists(directory):
@@ -217,15 +238,13 @@ class Pipeline(object):
             print "Assembling haplotypes..."
             assemble_haps = HaplotypeAssembly(self.configfile)
             assemble_haps.run()
-        elif self.step == "clean-assembly":            
-            from clean_assembly import CleanAssembly
-            print "Cleaning assembly..."
-            clean_haps = CleanAssembly(self.configfile)
-            clean_haps.run()
         elif self.step == "sv-calling":
-            pass
+            from sv_calling import SVCaller
+            print "Calling SVs..."
+            call_svs = SVCaller(self.configfile)
+            call_svs.run()
         else:
-            sys.exit("Choose one of the following steps: phase-bam, assembly, clean-assembly, sv-calling")
+            sys.exit("Choose one of the following steps: phase-bam, prep-reads, assembly, sv-calling")
         #print "Detecting structural variants..."
         #from calling_structural_variants import StructuralVariationDetection
         #calling_structural_variants = StructuralVariationDetection(self.configfile)

@@ -97,6 +97,8 @@ class HaplotypeAssembly(Pipeline):
             bashfile = "%s/assemble_window_v3.sh" % directory
             params = {
                 'output': directory,
+                'raw_reads_dir': self.raw_reads_directory,
+                'python_scripts': self.package_python_directory,
                 'hap': window.hap,
                 'subreads_to_ref': self.phased_bamfile,
                 'chrom': window.chrom,
@@ -111,7 +113,11 @@ class HaplotypeAssembly(Pipeline):
         self.submitjobs()
 
     def merge_sequences(self):
-        records = []
+        records = {}
+        for hap in ["hap0","hap1","hap2"]:
+            records[hap] = {}
+            records[hap]["fa"] = []
+            records[hap]["fq"] = []
         for window in self.windows_to_assemble:
             directory = "%s/%s/%s/%s_%s" % (self.assembly_directory,window.hap,
                                             window.chrom,window.start,window.end)
@@ -121,8 +127,25 @@ class HaplotypeAssembly(Pipeline):
                     record.id = "%s.%s.%s.%s.raw.%s/0/0_0" % (window.chrom,window.start,window.end,window.hap,index)
                     record.description = ""
                     record.name = ""
-                    records.append(record)
-        SeqIO.write(records,self.assembly,"fasta")
+                    for hap,hap_key in zip(["0","1","2"],["hap0","hap1","hap2"]):
+                        if hap in window.hap:
+                            records[hap_key]["fa"].append(record)
+            raw_contigs = "%s/canu/raw.quivered.contigs.fastq" % directory
+            if self.non_emptyfile(raw_contigs):
+                for index,record in enumerate(SeqIO.parse(raw_contigs, "fastq")):
+                    record.id = "%s.%s.%s.%s.raw.%s/0/0_0" % (window.chrom,window.start,window.end,window.hap,index)
+                    record.description = ""
+                    record.name = ""
+                    for hap,hap_key in zip(["0","1","2"],["hap0","hap1","hap2"]):
+                        if hap in window.hap:
+                            records[hap_key]["fq"].append(record)
+        SeqIO.write(records["hap0"]["fa"],self.hap0_assembly_fa,"fasta")
+        SeqIO.write(records["hap1"]["fa"],self.hap1_assembly_fa,"fasta")
+        SeqIO.write(records["hap2"]["fa"],self.hap2_assembly_fa,"fasta")
+        SeqIO.write(records["hap0"]["fq"],self.hap0_assembly_fq,"fastq")
+        SeqIO.write(records["hap1"]["fq"],self.hap1_assembly_fq,"fastq")
+        SeqIO.write(records["hap2"]["fq"],self.hap2_assembly_fq,"fastq")
+
 
     def run(self):
         self.configure()

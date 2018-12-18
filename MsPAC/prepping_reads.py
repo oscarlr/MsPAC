@@ -66,6 +66,7 @@ class PrepReads(Pipeline):
             for read in reads:
                 outbamfile.write(read)
             outbamfile.close()
+            pysam.index(outbamfilefn)
 
     def merge_headers(self,headers):
         header = {}
@@ -75,8 +76,10 @@ class PrepReads(Pipeline):
                 header["RG"] = []
                 header["PG"] = []
                 header["SQ"] = []
-            header["RG"].append(headers[fn]["RG"][0])
-            header["PG"].append(headers[fn]["PG"][0])
+            for rg in headers[fn]["RG"]:
+                header["RG"].append(rg)
+            for pg in headers[fn]["PG"]:                
+                header["PG"].append(pg)
         return header
 
     def split_raw_reads(self):
@@ -85,6 +88,7 @@ class PrepReads(Pipeline):
         for chrom in read_names_per_read_group:
             for read_group in read_names_per_read_group[chrom]:        
                 print "\tWorking on chrom %s and read group %s" % (chrom,read_group)
+                print "\tExtracting %s reads" % len(read_names_per_read_group[chrom][read_group])
                 outdir = "%s/%s/%s" % (self.raw_reads_directory,chrom,read_group)
                 self.create_directory(outdir)
                 read_names = read_names_per_read_group[chrom][read_group]
