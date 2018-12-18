@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e -x
 
 mkdir -p input_data
 cd input_data
@@ -24,3 +24,4 @@ fi
 
 cd -
 
+MsPAC phase-bam run.cfg
