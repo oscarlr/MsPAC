@@ -28,3 +28,4 @@ ls input_data/reads.bam > reads.fofn
 
 MsPAC phase-bam run.cfg
 MsPAC prep-reads run.cfg
+MsPAC assembly run.cfg
