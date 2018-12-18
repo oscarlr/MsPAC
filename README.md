@@ -9,6 +9,8 @@ conda env create -f environment.yml
 conda activate MsPAC
 cd ..
 git clone https://github.com/oscarlr/cluster
+cd cluster
+python setup.py install
 ```
 
 ### Running the tests
