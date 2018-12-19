@@ -12,7 +12,7 @@ python setup.py install
 
 ### Installing cluster package that's needed
 cd ..
-git clone https://github.com/oscarlr/cluster
+git clone https://github.com/oscarlr/cluster.git
 cd cluster
 python setup.py install
 ```
