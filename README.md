@@ -41,6 +41,7 @@ cd testing
 sh run.sh
 ```
 ## Configuration file
+All the inputs are self-explanatory except `BAM fofn` and `Phased bedfile`. `BAM fofn` is file with a list of all the raw reads in BAM format (this is the output of a PacBio run). `Phased bedfile` is a bedfile that contains 5 entries. An entry is coordinate with the haplotype and then low or high. For example: `chr1 1 100 0_1 low`. This entries are the regions that will be assembled.
 ```
 [Input]
 directory = 
