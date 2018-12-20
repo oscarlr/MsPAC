@@ -2,7 +2,7 @@
 Phase reads, assemble haplotypes and detect SVs
 
 ## Usage
-MsPac is split into four steps. 
+MsPac is split into four steps. For each step, the input is a configuration file. A description of the configuration file is below.
 #### `phase-bam`
 In the first step `phase-bam`, a bam file is created. This bam file is a copy of the input bam file with a read group annotation added to the reads. A read group annotation of 1 and 2 corresponds to haplotype 1 and 2. The read group annotation of 0 corresponds to unassignable reads.
 #### `prep-reads`
@@ -39,4 +39,47 @@ python setup.py install
 ```
 cd testing
 sh run.sh
+```
+## Configuration file
+```
+[Input]
+directory = 
+
+[Phase-bam input files]
+phased vcf = 
+reads aligned = 
+
+[Phase-bam params]
+sample name in VCF = 
+output phased bamfile = 
+
+[Prep reads params]
+BAM fofn = 
+Raw reads directory =
+
+[Assembly params]
+Minimum phased block length = 1000
+Comma-seperated list of haplotypes = 0_1,0_2
+Assembly directory = 
+Flanking length = 1000
+Phased bedfile = None
+
+[SV calling params]
+SV calling directory =
+reference = 
+
+[Other params]
+cluster = No
+
+[HIGH INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
+
+[LOW INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
 ```
