@@ -1,7 +1,7 @@
 # MsPAC
 Phase reads, assemble haplotypes and detect SVs
 
-### Usage
+## Usage
 MsPac is split into four steps. 
 #### `phase-bam`
 In the first step `phase-bam`, a bam file is created. This bam file is a copy of the input bam file with a read group annotation added to the reads. A read group annotation of 1 and 2 corresponds to haplotype 1 and 2. The read group annotation of 0 corresponds to unassignable reads.
@@ -19,7 +19,7 @@ MsPAC assembly run.cfg
 MsPAC sv-calling run.cfg
 ```
 
-### Installing
+## Installing
 ```
 ### Installing MsPAC and it's dependencies
 git clone https://github.com/oscarlr/MsPAC.git
@@ -35,7 +35,7 @@ cd cluster
 python setup.py install
 ```
 
-### Running the tests
+## Running the tests
 ```
 cd testing
 sh run.sh
