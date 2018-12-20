@@ -1,6 +1,14 @@
 # MsPAC
 Phase reads, assemble haplotypes and detect SVs
 
+### Usage
+```
+MsPAC phase-bam run.cfg
+MsPAC prep-reads run.cfg
+MsPAC assembly run.cfg
+MsPAC sv-calling run.cfg
+```
+
 ### Installing
 ```
 ### Installing MsPAC and it's dependencies
