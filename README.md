@@ -6,7 +6,7 @@ MsPac is split into four steps. For each step, the input is a configuration file
 #### `phase-bam`
 In the first step `phase-bam`, a bam file is created. This bam file is a copy of the input bam file with a read group annotation added to the reads. A read group annotation of 1 and 2 corresponds to haplotype 1 and 2. The read group annotation of 0 corresponds to unassignable reads.
 #### `prep-reads`
-In the second step `prep-reads`, several bam files are created. These bam contain the raw reads seperated by chromosome and haplotype. It makes the process of searching for these reads much during the Quiver process, where haplotype specific reads are used to clean the haplotype-specific contigs.
+In the second step `prep-reads`, several bam files are created. These bam contain the raw reads seperated by chromosome and haplotype. It makes the process of searching for these reads much faster during the Quiver process, where haplotype specific reads are used to clean the haplotype-specific contigs.
 #### `assembly`
 In the third step `assembly`, the haplotypes are assembled. During this process folders will be created for each region. Within each folder there is a bash script that runs the assembly process. MsPAC can submit these bash scripts as a single job into the cluster (this speeds up the process).
 #### `sv-calling`
