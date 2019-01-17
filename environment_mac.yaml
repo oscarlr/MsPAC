@@ -91,9 +91,7 @@ dependencies:
   - kalign=2.03
   - zlib=1.2.11
   - bedtools=2.27.1
-  - python-consensuscore2=3.1.0
   - numpy=1.15.4
-  - libgcc-ng=8.2.0
   - qt=5.6.2
   - perl=5.26.2
   - mkl_random=1.0.1
@@ -106,12 +104,12 @@ dependencies:
   - sqlite=3.25.3
   - mkl_fft=1.0.6
   - tk=8.6.8
-  - gstreamer=1.12.5
+  - gstreamer=1.14.4
   - gettext=0.19.8.1
   - genomicconsensus=2.3.2
   - canu=1.5
   - libgcc=7.2.0
   - libffi=3.2.1
-  - libgfortran-ng=7.3.0
+  - libgfortran-ng=3.0.1
   - gst-plugins-base=1.12.5
   - libstdcxx-ng=8.2.0
