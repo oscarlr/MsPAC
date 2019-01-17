@@ -18,6 +18,8 @@ MsPAC prep-reads run.cfg
 MsPAC assembly run.cfg
 MsPAC sv-calling run.cfg
 ```
+#### Notes
+1. Only works for Linux. This is due to packages only being avaible for Linux.
 
 ## Installing
 ```
