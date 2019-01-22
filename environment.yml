@@ -63,7 +63,7 @@ dependencies:
   - libxml2=2.9.8=h422b904_5
   - linecache2=1.0.0=py_1
   - ncurses=5.9=10
-  - networkx=2.2=py_1
+  - networkx=1.9
   - openjdk=11.0.1=h470a237_14
   - openssl=1.0.2p=h470a237_1
   - pango=1.40.14=0
