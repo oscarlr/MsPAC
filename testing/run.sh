@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e -x
 
+if [ -z "${SJOB_DEFALLOC}" ]
+then
+    export SJOB_DEFALLOC=""
+fi
+
 mkdir -p input_data
 cd input_data
 
