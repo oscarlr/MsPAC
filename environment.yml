@@ -8,6 +8,7 @@ channels:
 dependencies:
   - avro-python2=1.8.2=py_1
   - bcftools=1.9=h4da6232_0
+  - blas=1.0
   - blasr=5.3.2=h82bacf8_5
   - blasr_libcpp=5.3.1=h82bacf8_4
   - htslib=1.9=hc238db4_4
