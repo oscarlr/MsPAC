@@ -1,5 +1,6 @@
 # MsPAC
-Phase reads, assemble haplotypes and detect SVs
+**Phase reads, assemble haplotypes and detect SVs**
+MsPAC takes in long reads and phased SNVs to separate the reads into two haplotypes, assembles both haplotypes and detects structural variants. 
 
 ## Usage
 MsPac is split into four steps. For each step, the input is a configuration file. A description of the configuration file is below.
