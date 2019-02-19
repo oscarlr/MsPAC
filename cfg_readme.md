@@ -95,3 +95,31 @@ Phased bedfile = None
 22	20609570	50364777	0_1	high
 22	50414777	51244565	0_1	low
 ```
+
+```
+[SV calling params]
+SV calling directory = MsPAC/sv_calling
+reference = input_data/chr22.fa
+```
+`SV calling directory` is the directory with the output from the `sv-calling` MsPAC step. `reference` is the genome reference. 
+
+```
+[Other params]
+cluster = No
+```
+If `cluster` is "Yes", then the assembly and sv-calling jobs will be sent to the cluster.
+
+```
+[HIGH INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
+
+[LOW INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
+```
+Regions labelled `low` in `Phased bedfile` will use the `[LOW INTENSITY JOB]` configuration, and similarly for `high` regions.
