@@ -74,7 +74,6 @@ Raw reads directory = MsPAC/prep_reads
 `BAM fofn` is a file created by MsPAC that list all the BAM files created by the `prep-reads` step. `Raw reads directory` is the directory with the BAM files `prep-reads` creates. The BAM files contain the raw reads seperated by chromosome.
 
 ```
-
 [Assembly params]
 Minimum phased block length = 1000
 Comma-seperated list of haplotypes = 0_1,0_2
