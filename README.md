@@ -7,7 +7,8 @@
 [Test runs](#test-runs)<br/>
 [Configuration File](#cfg-file)<br/>
 [Quick Start](#quick-start)       
-[Explanation of steps](#explanation-of-steps)      
+[Explanation of steps](#explanation-of-steps)     
+[Example of output](#example-of-output)
 [Citation](#citation)
 
 ## Introduction
@@ -103,3 +104,4 @@ In the third step `assembly`, the haplotypes are assembled. During this process 
 #### `sv-calling`
 In the last step `sv-calling`, the haplotypes and reference are aligned and the SVs are called. In this step, new directories will be made that holds the multiple sequence alignment and a BED file with the SVs.
 
+## Example of output
