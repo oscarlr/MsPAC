@@ -4,8 +4,7 @@
 [Introduction](#introduction)  
 [Tool requirements](#tool-requirement)  
 [Installation](#installation)  
-[Installation test runs](#installation-test-runs)
-
+[Installation test runs](#test-runs)
 [Quick Start](#quick-start)       
 [Tutorial](#tutorial)      
 [Citation](#citation)
