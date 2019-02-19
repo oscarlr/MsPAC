@@ -65,3 +65,21 @@ sample name in VCF = 20977
 output phased bamfile = input_data/test_phased.bam
 ```
 `sample name in VCF` is the sample name in the VCF file. `output phased bamfile` is the output BAM file with the input reads phased. The input reads have a new read group tag. The read group tag `0` is unphased reads. The read group tag `1` is haplotype 1 and the tag `2` is haplotype 2.
+
+```
+[Prep reads params]
+BAM fofn = reads.fofn
+Raw reads directory = MsPAC/prep_reads
+```
+`BAM fofn` is a file created by MsPAC that list all the BAM files created by the `prep-reads` step. `Raw reads directory` is the directory with the BAM files `prep-reads` creates. The BAM files contain the raw reads seperated by chromosome.
+
+```
+
+[Assembly params]
+Minimum phased block length = 1000
+Comma-seperated list of haplotypes = 0_1,0_2
+Assembly directory = MsPAC/assembly
+Flanking length = 1000
+Phased bedfile = None
+```
+`Minimum phased block length` is the minimum size that will be assembled. 
