@@ -33,7 +33,7 @@ cd cluster
 python setup.py install
 ```
 
-## Installation test runs
+## Test runs
 ```
 cd testing
 sh run.sh
