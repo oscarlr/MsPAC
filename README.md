@@ -16,6 +16,21 @@ MsPAC takes in long reads and phased SNVs to separate the reads into two haploty
 2. [Conda package](https://conda.io/en/latest/)
 3. [cluster python package](https://github.com/oscarlr/cluster)
 
+## Installation
+```
+### Installing MsPAC and it's dependencies
+git clone https://github.com/oscarlr/MsPAC.git
+cd MsPAC
+conda env create -f environment.yml 
+conda activate MsPAC
+python setup.py install
+
+### Installing cluster package that's needed
+cd ..
+git clone https://github.com/oscarlr/cluster.git
+cd cluster
+python setup.py install
+```
 
 ## Usage
 MsPac is split into four steps. For each step, the input is a configuration file. A description of the configuration file is below.
