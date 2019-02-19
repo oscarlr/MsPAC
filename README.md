@@ -105,3 +105,23 @@ In the third step `assembly`, the haplotypes are assembled. During this process 
 In the last step `sv-calling`, the haplotypes and reference are aligned and the SVs are called. In this step, new directories will be made that holds the multiple sequence alignment and a BED file with the SVs.
 
 ## Example of output
+```
+chr22	16610019	16610020	INS	1|0	46	46.6780821918	46.84	.	CACTGCTGTTGGGTTCTCTTTGTTTTTCCTCACAAAGGATTCCACA	.	18270	18316	/sc/orga/work/rodrio10/software/in_github/MsPAC/testing/MsPAC/sv_calling/chr22/16595201_16611082/msa.clu
+```
+The columns are:
+```
+1. chromosome
+2. SV start
+3. SV end
+4. SV type
+5. SV genotype
+6. SV size
+7. Haplotype 1 SV quality score 
+8. Haplotype 2 SV quality score
+9. Reference sequence
+10. Haplotype 1 sequence
+11. Haplotype 2 sequence
+12. Start index position of SV in multiple sequence aligment file 
+13. End index position of SV in multiple sequence aligment file 
+14. Full path of multiple sequence alignment file
+```
