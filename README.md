@@ -2,7 +2,7 @@
 **Phase reads, assemble haplotypes and detect SVs**
 
 [Introduction](#introduction)  
-[Tool requirements](#tool-requirement)  
+[Tool requirements](#tool-requirements)  
 [Installation](#installation)  
 [Test runs](#test)<br/>
 [Configuration File](#cfg-file)<br/>
