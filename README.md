@@ -5,6 +5,7 @@
 [Tool requirements](#tool-requirement)  
 [Installation](#installation)  
 [Test runs](#test)<br/>
+[Configuration File](#cfg-file)
 [Quick Start](#quick-start)       
 [Tutorial](#tutorial)      
 [Citation](#citation)
@@ -37,6 +38,50 @@ python setup.py install
 ```
 cd testing
 sh run.sh
+```
+## Configuration File
+Explanation of configuration file entries is [here](cfg.readme).
+```
+[Input]
+directory = 
+
+[Phase-bam input files]
+phased vcf = 
+reads aligned = 
+
+[Phase-bam params]
+sample name in VCF = 
+output phased bamfile = 
+
+[Prep reads params]
+BAM fofn = 
+Raw reads directory =
+
+[Assembly params]
+Minimum phased block length = 1000
+Comma-seperated list of haplotypes = 0_1,0_2
+Assembly directory = 
+Flanking length = 1000
+Phased bedfile = None
+
+[SV calling params]
+SV calling directory =
+reference = 
+
+[Other params]
+cluster = No
+
+[HIGH INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
+
+[LOW INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
 ```
 
 ## Usage
@@ -80,8 +125,8 @@ python setup.py install
 cd testing
 sh run.sh
 ```
-## Configuration file
-All the inputs are self-explanatory except `BAM fofn` and `Phased bedfile`. `BAM fofn` is file with a list of all the raw reads in BAM format (this is the output of a PacBio run). `Phased bedfile` is a bedfile that contains 5 entries. An entry is coordinate with the haplotype and then low or high. For example: `chr1 1 100 0_1 low`. This entries are the regions that will be assembled. There is an example configuration file in the testing folder.
+## Configuration File
+Explanation of configuration file entries is [here](cfg.readme).
 ```
 [Input]
 directory = 
