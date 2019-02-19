@@ -4,6 +4,7 @@
 [Introduction](#introduction)  
 [Tool requirements](#tool-requirement)  
 [Installation](#installation)  
+[Installation test runs](#installation-test-runs)
 [Quick Start](#quick-start)       
 [Tutorial](#tutorial)      
 [Citation](#citation)
@@ -30,6 +31,12 @@ cd ..
 git clone https://github.com/oscarlr/cluster.git
 cd cluster
 python setup.py install
+```
+
+## Installation test runs
+```
+cd testing
+sh run.sh
 ```
 
 ## Usage
