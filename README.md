@@ -2,7 +2,7 @@
 **Phase reads, assemble haplotypes and detect SVs**
 
 [Introduction](#introduction)  
-[Tool requirement](#tool-requirement)  
+[Tool requirements](#tool-requirement)  
 [Installation](#installation)  
 [Quick Start](#quick-start)       
 [Tutorial](#tutorial)      
@@ -10,6 +10,13 @@
 
 ## Introduction
 MsPAC takes in long reads and phased SNVs to separate the reads into two haplotypes, and assembles both haplotypes and detects structural variants. The output is a fasta file containing both haplotypes and VCF file with SVs. The SVs are annotated with their type, size, genotype and reference, haplotype 1 and haplotype 2 sequence.
+
+## Tool requirements
+```
+1. Linux operating system
+2. [Conda package](https://conda.io/en/latest/)
+3. [cluster python package](https://github.com/oscarlr/cluster)
+```
 
 ## Usage
 MsPac is split into four steps. For each step, the input is a configuration file. A description of the configuration file is below.
