@@ -121,7 +121,7 @@ The columns are:
 9. Reference sequence
 10. Haplotype 1 sequence
 11. Haplotype 2 sequence
-12. Start index position of SV in multiple sequence aligment file 
-13. End index position of SV in multiple sequence aligment file 
+12. Start index position of SV in multiple sequence alignment file 
+13. End index position of SV in multiple sequence alignment file 
 14. Full path of multiple sequence alignment file
 ```
