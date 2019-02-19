@@ -1,0 +1,45 @@
+[Example](#example)  
+
+# Example
+```
+[Input]
+directory = MsPAC
+
+[Phase-bam input files]
+phased vcf = input_data/test.vcf.gz
+reads aligned = input_data/test.bam
+
+[Phase-bam params]
+sample name in VCF = 20977
+output phased bamfile = input_data/test_phased.bam
+
+[Prep reads params]
+BAM fofn = reads.fofn
+Raw reads directory = MsPAC/prep_reads
+
+[Assembly params]
+Minimum phased block length = 1000
+Comma-seperated list of haplotypes = 0_1,0_2
+Assembly directory = MsPAC/assembly
+Flanking length = 1000
+Phased bedfile = None
+
+[SV calling params]
+SV calling directory = MsPAC/sv_calling
+reference = input_data/chr22.fa
+
+[Other params]
+cluster = No
+
+[HIGH INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
+
+[LOW INTENSITY JOB]
+walltime = 24
+threads = 1
+memory = 8
+queue = private
+```
