@@ -9,7 +9,7 @@
 [Quick Start](#quick-start)       
 [Explanation of steps](#explanation-of-steps)     
 [Example of output](#example-of-output)
-[Citation](#citation)
+
 
 ## Introduction
 MsPAC takes in long reads and phased SNVs to separate the reads into two haplotypes, and assembles both haplotypes and detects structural variants. The output is a fasta file containing both haplotypes and VCF file with SVs. The SVs are annotated with their type, size, genotype and reference, haplotype 1 and haplotype 2 sequence.
