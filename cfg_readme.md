@@ -64,7 +64,7 @@ reads aligned = input_data/test.bam
 sample name in VCF = 20977
 output phased bamfile = input_data/test_phased.bam
 ```
-`sample name in VCF` is the sample name in the VCF file. `output phased bamfile` is the output BAM file with the input reads phased. The input reads have a new read group tag. The read group tag `0` is unphased reads. The read group tag `1` is haplotype 1 and the tag `2` is haplotype 2.
+`sample name in VCF` is the sample name in the VCF file. `output phased bamfile` is the output BAM file with the input reads phased. In the `output phased bamfile`, the input reads have a new read group tag. The read group tag `0`, `1`, and `2` correspond to unphased reads, haplotype 1, and haplotype 2.
 
 ```
 [Prep reads params]
@@ -81,7 +81,7 @@ Assembly directory = MsPAC/assembly
 Flanking length = 1000
 Phased bedfile = None
 ```
-`Minimum phased block length` is the minimum size that will be assembled. `Comma-seperated list of haplotypes` are the haplotypes that will be assembled. The options are: `0`,`1`,`2`,`0_1`, and `0_2`. `0`,`1`, and `2` are unambiguous regions, haplotype 1 and haplotype 2. `0_1` and `0_2` are haplotype 1 and 2 with the reads from unambiguous regions added to both haplotype 1 and 2. `Assembly directory ` is the directory with the regions assembled. `Flanking length` is an extra amount of added to both ends of the regions. `Phased bedfile` is a bed file with the regions to assemble. It is created by MsPAC if none is given. `Phased bedfile` should have this format:
+`Minimum phased block length` is the minimum size that will be assembled. `Comma-seperated list of haplotypes` are the haplotypes that will be assembled. The options are: `0`,`1`,`2`,`0_1`, and `0_2`. `0`,`1`, and `2` are unambiguous regions, haplotype 1 and haplotype 2. `0_1` and `0_2` are haplotype 1 and 2 with the reads from unambiguous regions added to both haplotype 1 and 2. `Assembly directory ` is the directory with the regions assembled. `Flanking length` is an extra amount of bases added to both ends of each region to be assembled. `Phased bedfile` is a bed file with the regions to assemble. It is created by MsPAC if none is given. `Phased bedfile` should have this tab-delimited format:
 `chromosome start end haplotype low/high`, for example:
 ```
 22	16050007	16697745	1	low
@@ -101,7 +101,7 @@ Phased bedfile = None
 SV calling directory = MsPAC/sv_calling
 reference = input_data/chr22.fa
 ```
-`SV calling directory` is the directory with the output from the `sv-calling` MsPAC step. `reference` is the genome reference. 
+`SV calling directory` is the directory with the output from the `sv-calling` MsPAC step. `reference` is the genome reference in fasta format. 
 
 ```
 [Other params]
