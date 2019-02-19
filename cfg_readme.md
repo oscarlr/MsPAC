@@ -1,4 +1,5 @@
 [Example](#example)  
+[Explanation]
 
 # Example
 ```
@@ -43,3 +44,24 @@ threads = 1
 memory = 8
 queue = private
 ```
+
+# Explanation
+```
+[Input]
+directory = MsPAC
+```
+The directory that MsPAC writes to.
+
+```
+[Phase-bam input files]
+phased vcf = input_data/test.vcf.gz
+reads aligned = input_data/test.bam
+```
+`phase vcf` is the input phased VCF file with the phased SNPs. `reads aligned` is the input BAM file with reads aligned. 
+
+```
+[Phase-bam params]
+sample name in VCF = 20977
+output phased bamfile = input_data/test_phased.bam
+```
+`sample name in VCF` is the sample name in the VCF file. `output phased bamfile` is the output BAM file with the input reads phased. The input reads have a new read group tag. The read group tag `0` is unphased reads. The read group tag `1` is haplotype 1 and the tag `2` is haplotype 2.
