@@ -105,6 +105,7 @@ In the third step `assembly`, the haplotypes are assembled. During this process 
 In the last step `sv-calling`, the haplotypes and reference are aligned and the SVs are called. In this step, new directories will be made that holds the multiple sequence alignment and a BED file with the SVs.
 
 ## Example of output
+### SV output
 ```
 chr22	16610019	16610020	INS	1|0	46	46.6780821918	46.84	.	CACTGCTGTTGGGTTCTCTTTGTTTTTCCTCACAAAGGATTCCACA	.	18270	18316	/sc/orga/work/rodrio10/software/in_github/MsPAC/testing/MsPAC/sv_calling/chr22/16595201_16611082/msa.clu
 ```
@@ -125,3 +126,17 @@ The columns are:
 13. End index position of SV in multiple sequence alignment file 
 14. Full path of multiple sequence alignment file
 ```
+### Assembled fasta haplotype 
+```
+>22.16050007.16697745.0_1.raw.0/0/0_0
+GACCATGTGAAACTAAGGACAACTTCAGAGCTTCACACAGCTTCAACACTGGAGAGAAAA
+CAGTGAACCCACAGAAAACATCCTACAGACTGGGAGAAAATTATGGAAAACTGTGGATCT
+GGAAGGGCTTCTTATCTAACATATTCAAGAAACTAATGGTCCTAAGTGGACAAAAACCAA
+TATACAATGCTTGTCACACCTAAGTGGACAAAAACCAATACTAAAAATGCCCAAAAGACT
+GCGTAGGCATTTCTGAAAAAACCTGAAACAGCCTCTCAGGTAACAGAAGTTTCTCCACAT
+CAAGAAGAGTTTCTCCCCAGAGAACGAGTATGACCAGAAAACAGCAATAAAACTTTGGAA
+TAAGAGATAAGGGCAGTGTAGATTTGCAGACAGAGGAACTATTACATACTACCTGGTTTG
+AATGCAAATTTGTATACCCACTGGGAAACAGCTGGAGGTTTCTGAAACAATTAACAACAC
+AACCACCAGTTCCTCTAGCCATCCCACACTGGGTATACCTGCAAAGCCAAGGAAACCTAC
+```
+The fasta header has the region that was assembled with the corresponding haplotype.
