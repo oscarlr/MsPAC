@@ -7,7 +7,7 @@
 [Test runs](#test-runs)<br/>
 [Configuration File](#cfg-file)<br/>
 [Quick Start](#quick-start)       
-[Tutorial](#tutorial)      
+[Explanation of steps](#explanation-of-steps)      
 [Citation](#citation)
 
 ## Introduction
@@ -84,7 +84,15 @@ memory = 8
 queue = private
 ```
 
-## Usage
+## Quick Start
+```
+MsPAC phase-bam run.cfg
+MsPAC prep-reads run.cfg
+MsPAC assembly run.cfg
+MsPAC sv-calling run.cfg
+```
+
+## Explanation of steps
 MsPac is split into four steps. For each step, the input is a configuration file. A description of the configuration file is below.
 #### `phase-bam`
 In the first step `phase-bam`, a bam file is created. This bam file is a copy of the input bam file with a read group annotation added to the reads. A read group annotation of 1 and 2 corresponds to haplotype 1 and 2. The read group annotation of 0 corresponds to unassignable reads.
@@ -95,77 +103,3 @@ In the third step `assembly`, the haplotypes are assembled. During this process 
 #### `sv-calling`
 In the last step `sv-calling`, the haplotypes and reference are aligned and the SVs are called. In this step, new directories will be made that holds the multiple sequence alignment and a BED file with the SVs.
 
-```
-MsPAC phase-bam run.cfg
-MsPAC prep-reads run.cfg
-MsPAC assembly run.cfg
-MsPAC sv-calling run.cfg
-```
-#### Notes
-1. Only works for Linux. This is due to packages only being avaible for Linux.
-
-## Installing
-```
-### Installing MsPAC and it's dependencies
-git clone https://github.com/oscarlr/MsPAC.git
-cd MsPAC
-conda env create -f environment.yml 
-conda activate MsPAC
-python setup.py install
-
-### Installing cluster package that's needed
-cd ..
-git clone https://github.com/oscarlr/cluster.git
-cd cluster
-python setup.py install
-```
-
-## Running the tests
-```
-cd testing
-sh run.sh
-```
-## Configuration File
-Explanation of configuration file entries is [here](cfg.readme).
-```
-[Input]
-directory = 
-
-[Phase-bam input files]
-phased vcf = 
-reads aligned = 
-
-[Phase-bam params]
-sample name in VCF = 
-output phased bamfile = 
-
-[Prep reads params]
-BAM fofn = 
-Raw reads directory =
-
-[Assembly params]
-Minimum phased block length = 1000
-Comma-seperated list of haplotypes = 0_1,0_2
-Assembly directory = 
-Flanking length = 1000
-Phased bedfile = None
-
-[SV calling params]
-SV calling directory =
-reference = 
-
-[Other params]
-cluster = No
-
-[HIGH INTENSITY JOB]
-walltime = 24
-threads = 1
-memory = 8
-queue = private
-
-[LOW INTENSITY JOB]
-walltime = 24
-threads = 1
-memory = 8
-queue = private
-```
