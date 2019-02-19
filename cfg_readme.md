@@ -82,4 +82,17 @@ Assembly directory = MsPAC/assembly
 Flanking length = 1000
 Phased bedfile = None
 ```
-`Minimum phased block length` is the minimum size that will be assembled. 
+`Minimum phased block length` is the minimum size that will be assembled. `Comma-seperated list of haplotypes` are the haplotypes that will be assembled. The options are: `0`,`1`,`2`,`0_1`, and `0_2`. `0`,`1`, and `2` are unambiguous regions, haplotype 1 and haplotype 2. `0_1` and `0_2` are haplotype 1 and 2 with the reads from unambiguous regions added to both haplotype 1 and 2. `Assembly directory ` is the directory with the regions assembled. `Flanking length` is an extra amount of added to both ends of the regions. `Phased bedfile` is a bed file with the regions to assemble. It is created by MsPAC if none is given. `Phased bedfile` should have this format:
+`chromosome start end haplotype low/high`, for example:
+```
+22	16050007	16697745	1	low
+22	16847850	17262375	1	low
+22	17262464	18711525	1	low
+22	18712024	18712281	1	low
+22	50414777	51244565	0	low
+22	16050007	16697745	2	low
+22	50414777	51244565	2	low
+22	16050007	16697745	0_2	low
+22	20609570	50364777	0_1	high
+22	50414777	51244565	0_1	low
+```
