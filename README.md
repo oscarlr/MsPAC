@@ -37,6 +37,7 @@ python setup.py install
 
 ## Test runs
 ```
+export SJOB_DEFALLOC=""
 cd testing
 sh run.sh
 ```
