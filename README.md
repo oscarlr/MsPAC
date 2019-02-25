@@ -4,6 +4,7 @@
 [Introduction](#introduction)  
 [Tool requirements](#tool-requirements)  
 [Installation](#installation)  
+[Cluster configuration](#cluster-configuration)
 [Test runs](#test-runs)<br/>
 [Configuration File](#cfg-file)<br/>
 [Quick Start](#quick-start)       
