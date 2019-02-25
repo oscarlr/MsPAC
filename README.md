@@ -6,7 +6,7 @@
 [Installation](#installation)  
 [Cluster configuration](#cluster-configuration)<br/>
 [Test runs](#test-runs)<br/>
-[Configuration File](#cfg-file)<br/>
+[Configuration File](#configuration-file)<br/>
 [Quick Start](#quick-start)       
 [Explanation of steps](#explanation-of-steps)     
 [Example of output](#example-of-output)
