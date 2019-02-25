@@ -40,7 +40,7 @@ If you don't want to use the cluster use this command before running MsPAC:
 ```
 export SJOB_DEFALLOC=""
 ```
-If you want to use the cluster, edit the `lsf/cluster/config.py` script in `https://github.com/oscarlr/cluster.git`. The cluster package reads from this file, the default configurations to run jobs in the cluster as wells as the account to use in the cluster.
+If you want to use the cluster, edit the `lsf/cluster/config.py` script in `https://github.com/oscarlr/cluster.git`. The cluster package reads from this file the default configurations to run jobs in the cluster as wells as the account to use when submitting jobs.
 
 ## Test runs
 ```
