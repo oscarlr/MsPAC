@@ -10,6 +10,7 @@
 [Quick Start](#quick-start)       
 [Explanation of steps](#explanation-of-steps)     
 [Example of output](#example-of-output)
+[Manuscript results](#manuscript-results)
 
 
 ## Introduction
@@ -183,3 +184,5 @@ ip:Z:S26,94,16,11,14,14,77,19,28,28,26,91,24,5,35,8,11,46,10,31,75,27,16,257,26,
 RG:Z:2
 ```
 RG tag has the haplotype information. This read can be accessed using the `samtools view` command with the `-r` option. For example, `samtools view reads.bam 22:16050008-16050108 -r 2`.
+## Manuscript results
+[HG002 Assemblies](https://rodrio10.u.hpc.mssm.edu/MsPAC/hg002_assembly/haplotypes/)
