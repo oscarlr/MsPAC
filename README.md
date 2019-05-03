@@ -186,3 +186,4 @@ RG:Z:2
 RG tag has the haplotype information. This read can be accessed using the `samtools view` command with the `-r` option. For example, `samtools view reads.bam 22:16050008-16050108 -r 2`.
 ## Manuscript results
 [HG002 haplotype assemblies](https://rodrio10.u.hpc.mssm.edu/MsPAC/hg002_assembly/haplotypes/)
+[HG002 SV calls](https://rodrio10.u.hpc.mssm.edu/MsPAC/SV_calls.bed)
