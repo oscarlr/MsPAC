@@ -12,6 +12,11 @@ subreads_to_ref=$8
 hap=$9
 reference=${10}
 memory=${11}
+raw_reads_dir=${12}
+start=${13}
+end=${14}
+chrom=${15}
+python_scripts=${16}
 
 if [ "${hap}" == "0_1" ]
 then
@@ -35,8 +40,8 @@ then
 	-d ${output}/canu \
 	contigFilter="2 1000 1.0 1.0 2" \
 	corMinCoverage=0 \
+	stopOnLowCoverage=0 \
 	minThreads=${threads} \
-        minMemory=${memory} \
 	genomeSize=${size} \
 	useGrid=0 \
 	-pacbio-raw ${output}/reads.fasta
@@ -57,6 +62,11 @@ then
 	    ls ${raw_reads_dir}/${chrom}/0/*bam >> ${output}/subreads.fofn
 	else
 	    ls ${raw_reads_dir}/${chrom}/${hap}/*bam > ${output}/subreads.fofn
+	fi
+	if [ ! -s ${output}/subreads.fofn ]
+	then
+	    echo "" > ${output}/done
+	    exit 0
 	fi
 	cut -f1 ${output}/reads.fasta.fai > ${output}/reads.id
 	python \
@@ -81,7 +91,7 @@ then
     if [ ! -s ${output}/canu/raw.quivered.contigs.fastq ]
     then
         samtools faidx ${output}/canu/raw.contigs.fasta
-        variantCaller \
+        arrow \
             --referenceFilename ${output}/canu/raw.contigs.fasta \
             -j ${threads} \
             -o ${output}/canu/raw.quivered.contigs.fastq \
