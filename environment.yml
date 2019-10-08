@@ -3,6 +3,7 @@ channels:
   - hcc
   - conda-forge
   - bioconda
+  - etetoolkit
   - defaults
 dependencies:
   - avro-python2=1.8.2=py_1
@@ -88,7 +89,7 @@ dependencies:
   - pip=18.1=py27_0
   - setuptools=40.6.2=py27_0
   - wheel=0.32.3=py27_0
-  - kalign=2.0
+  - kalign
   - zlib=1.2.11
   - bedtools=2.27.1
   - python-consensuscore2=3.1.0

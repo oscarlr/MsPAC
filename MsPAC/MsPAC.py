@@ -48,6 +48,7 @@ class Pipeline(object):
         self.haps_to_assemble = None
         self.assembly_directory = None
         self.flanking_length = None
+        self.max_block_length = None
         ## Non user options
         self.hap0_assembly_fa = None
         self.hap0_assembly_fq = None
@@ -123,6 +124,7 @@ class Pipeline(object):
              ("haps_to_assemble",config.get("Assembly params",'Comma-seperated list of haplotypes')),
              ("phased_bamfile",os.path.abspath(config.get("Phase-bam params",'output phased bamfile'))),
              ("flanking_length",int(config.get("Assembly params",'Flanking length'))),
+             ("max_block_length",int(config.get("Assembly params",'Max block length'))),
              ("raw_reads_directory",os.path.abspath(config.get("Prep reads params",'Raw reads directory'))), #ugh
              ("assembly_directory",os.path.abspath(config.get("Assembly params",'Assembly directory')))]
         self.set_options(pipeline_options)
@@ -197,7 +199,7 @@ class Pipeline(object):
         for job,intensity in self.jobs:
             hpc.config(cpu=self.job_threads[intensity],
                        walltime=self.job_walltime[intensity],
-                       memory=self.job_memory[intensity],
+                       memory=int(self.job_memory[intensity]) * int(self.job_threads[intensity]),
                        queue=self.job_queue[intensity])
             hpc.submit("%s" % job)
         if wait:

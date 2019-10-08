@@ -17,7 +17,10 @@ def read_phased_snps(vcffile,sample):
         if record.var_subtype == "insertion":
             continue
         phased_snps.setdefault(record.CHROM, {})
-        alleles  = record.genotype(sample)['GT'].split("|")
+        try:
+            alleles = record.genotype(sample)['PGT'].split("|")
+        except:
+            alleles = record.genotype(sample)['GT'].split("|")
         if len(alleles) == 2 and alleles[0] != alleles[1]:            
             alleles = map(int, alleles)
             if max(alleles) != 1:

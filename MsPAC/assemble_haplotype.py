@@ -62,13 +62,28 @@ class HaplotypeAssembly(Pipeline):
                 merged_regions.append(higher)
         return merged_regions
 
+    def break_long_regions(self,regions):
+        broken_regions = []
+        for start,end in regions:
+            for new_start in range(start,end,self.max_block_length):
+                new_end = new_start + self.max_block_length
+                if new_end > end:
+                    new_end = end
+                broken_regions.append((new_start,new_end))
+        return broken_regions
+
+    # Max block length
     def create_phased_bedfile(self):
-        window_size = 10000000 # 100 MB //Everything should get low
+        window_size = 1000000 # 10 MB //Everything should get low
         read_group_regions = self.get_read_groups_regions()
         with open(self.phased_bedfile,'w') as fh:
             for read_group in read_group_regions:
                 for chrom in read_group_regions[read_group]:
-                    merged_regions = self.merge_regions(read_group_regions[read_group][chrom])
+                    merged_regions_pre_broken = self.merge_regions(read_group_regions[read_group][chrom])
+                    if self.max_block_length == None:
+                        merged_regions = merged_regions_pre_broken
+                    else:
+                        merged_regions = self.break_long_regions(merged_regions_pre_broken)
                     for start,end in merged_regions:
                         comp_cost = "low"
                         if end - start > window_size:
@@ -122,6 +137,7 @@ class HaplotypeAssembly(Pipeline):
             directory = "%s/%s/%s/%s_%s" % (self.assembly_directory,window.hap,
                                             window.chrom,window.start,window.end)
             raw_contigs = "%s/canu/raw.contigs.fasta" % directory
+            #raw_contigs = "%s/canu/raw.quivered.contigs.fasta" % directory
             if self.non_emptyfile(raw_contigs):
                 for index,record in enumerate(SeqIO.parse(raw_contigs, "fasta")):
                     record.id = "%s.%s.%s.%s.raw.%s/0/0_0" % (window.chrom,window.start,window.end,window.hap,index)
@@ -132,6 +148,7 @@ class HaplotypeAssembly(Pipeline):
                             records[hap_key]["fa"].append(record)
             raw_contigs = "%s/canu/raw.quivered.contigs.fastq" % directory
             if self.non_emptyfile(raw_contigs):
+                print raw_contigs
                 for index,record in enumerate(SeqIO.parse(raw_contigs, "fastq")):
                     record.id = "%s.%s.%s.%s.raw.%s/0/0_0" % (window.chrom,window.start,window.end,window.hap,index)
                     record.description = ""
@@ -149,6 +166,6 @@ class HaplotypeAssembly(Pipeline):
 
     def run(self):
         self.configure()
-        self.load_haplotype_blocks()
-        self.assemble_windows()
+        self.load_haplotype_blocks()        
+        #self.assemble_windows()
         self.merge_sequences()
