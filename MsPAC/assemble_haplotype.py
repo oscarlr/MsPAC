@@ -25,7 +25,9 @@ class PhasedBlocks():
 class HaplotypeAssembly(Pipeline):
     def __init__(self,configfile):
         Pipeline.__init__(self,configfile,"assembly")
-
+        if self.tech not in ["ONT","PACB","NONE"]:
+            sys.exit("Assign tech in config file to ONT or PACB")
+        
     def get_read_groups_regions(self):
         read_groups = ["0","1","2","0_1","0_2"]
         regions = dict.fromkeys(read_groups,{})
@@ -121,7 +123,8 @@ class HaplotypeAssembly(Pipeline):
                 'end': window.end,
                 'threads': self.job_threads[window.comp_cost],
                 'memory': int(self.job_threads[window.comp_cost])*int(self.job_memory[window.comp_cost]),
-                'size': max(6000,window.end - window.start)
+                'size': max(6000,window.end - window.start),
+                'tech': self.tech
                 }
             self.write_to_bashfile(template_bash,bashfile,params)
             self.jobs.append((bashfile,window.comp_cost))
@@ -167,5 +170,5 @@ class HaplotypeAssembly(Pipeline):
     def run(self):
         self.configure()
         self.load_haplotype_blocks()        
-        #self.assemble_windows()
+        self.assemble_windows()
         self.merge_sequences()

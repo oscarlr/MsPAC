@@ -17,6 +17,18 @@ start=${13}
 end=${14}
 chrom=${15}
 python_scripts=${16}
+tech=${17}
+
+if [ "${tech}" == "ONT" ]
+then
+    canu_tech="-nanopore-raw"
+fi
+
+if [ "${tech}" == "PACB" ]
+then
+    canu_tech="-pacbio-raw"
+fi
+
 
 if [ "${hap}" == "0_1" ]
 then
@@ -44,59 +56,62 @@ then
 	minThreads=${threads} \
 	genomeSize=${size} \
 	useGrid=0 \
-	-pacbio-raw ${output}/reads.fasta
+	${canu_tech} ${output}/reads.fasta
 fi
 
-if [  -s ${output}/canu/raw.contigs.fasta ]
+if [ "${tech}" == "PACB" ]
 then
-    samtools faidx ${output}/canu/raw.contigs.fasta
-    if [ ! -s ${output}/subreads.bam ]
+    if [  -s ${output}/canu/raw.contigs.fasta ]
     then
-	if [ "${hap}" == "0_1" ]
+	samtools faidx ${output}/canu/raw.contigs.fasta
+	if [ ! -s ${output}/subreads.bam ]
 	then
-	    ls ${raw_reads_dir}/${chrom}/1/*bam > ${output}/subreads.fofn
-	    ls ${raw_reads_dir}/${chrom}/0/*bam >> ${output}/subreads.fofn
-	elif [ "${hap}" == "0_2" ]
-	then
-	    ls ${raw_reads_dir}/${chrom}/2/*bam > ${output}/subreads.fofn
-	    ls ${raw_reads_dir}/${chrom}/0/*bam >> ${output}/subreads.fofn
-	else
-	    ls ${raw_reads_dir}/${chrom}/${hap}/*bam > ${output}/subreads.fofn
+	    if [ "${hap}" == "0_1" ]
+	    then
+		ls ${raw_reads_dir}/${chrom}/1/*bam > ${output}/subreads.fofn
+		ls ${raw_reads_dir}/${chrom}/0/*bam >> ${output}/subreads.fofn
+	    elif [ "${hap}" == "0_2" ]
+	    then
+		ls ${raw_reads_dir}/${chrom}/2/*bam > ${output}/subreads.fofn
+		ls ${raw_reads_dir}/${chrom}/0/*bam >> ${output}/subreads.fofn
+	    else
+		ls ${raw_reads_dir}/${chrom}/${hap}/*bam > ${output}/subreads.fofn
+	    fi
+	    if [ ! -s ${output}/subreads.fofn ]
+	    then
+		echo "" > ${output}/done
+		exit 0
+	    fi
+	    cut -f1 ${output}/reads.fasta.fai > ${output}/reads.id
+	    python \
+		${python_scripts}/extract_raw_reads_from_bam_fofn.py \
+		${output}/reads.id \
+		${output}/subreads.fofn \
+		${output}/subreads.bam
+	    pbindex ${output}/subreads.bam
 	fi
-	if [ ! -s ${output}/subreads.fofn ]
+	if [ ! -s ${output}/canu/reads_to_canu_contigs.sorted.bam.pbi ]
 	then
-	    echo "" > ${output}/done
-	    exit 0
+            blasr \
+		${output}/subreads.bam \
+		${output}/canu/raw.contigs.fasta \
+		--bestn 1 \
+		--bam \
+		--nproc ${threads} \
+		--out ${output}/canu/reads_to_canu_contigs.bam
+            samtools sort -@ ${threads} ${output}/canu/reads_to_canu_contigs.bam -o ${output}/canu/reads_to_canu_contigs.sorted.bam
+            pbindex ${output}/canu/reads_to_canu_contigs.sorted.bam
 	fi
-	cut -f1 ${output}/reads.fasta.fai > ${output}/reads.id
-	python \
-	    ${python_scripts}/extract_raw_reads_from_bam_fofn.py \
-	    ${output}/reads.id \
-	    ${output}/subreads.fofn \
-	    ${output}/subreads.bam
-	pbindex ${output}/subreads.bam
-    fi
-    if [ ! -s ${output}/canu/reads_to_canu_contigs.sorted.bam.pbi ]
-    then
-        blasr \
-	    ${output}/subreads.bam \
-            ${output}/canu/raw.contigs.fasta \
-            --bestn 1 \
-            --bam \
-            --nproc ${threads} \
-            --out ${output}/canu/reads_to_canu_contigs.bam
-        samtools sort -@ ${threads} ${output}/canu/reads_to_canu_contigs.bam -o ${output}/canu/reads_to_canu_contigs.sorted.bam
-        pbindex ${output}/canu/reads_to_canu_contigs.sorted.bam
-    fi
-    if [ ! -s ${output}/canu/raw.quivered.contigs.fastq ]
-    then
-        samtools faidx ${output}/canu/raw.contigs.fasta
-        arrow \
-            --referenceFilename ${output}/canu/raw.contigs.fasta \
-            -j ${threads} \
-            -o ${output}/canu/raw.quivered.contigs.fastq \
-            -o ${output}/canu/raw.quivered.contigs.fasta \
-            ${output}/canu/reads_to_canu_contigs.sorted.bam
+	if [ ! -s ${output}/canu/raw.quivered.contigs.fastq ]
+	then
+            samtools faidx ${output}/canu/raw.contigs.fasta
+            arrow \
+		--referenceFilename ${output}/canu/raw.contigs.fasta \
+		-j ${threads} \
+		-o ${output}/canu/raw.quivered.contigs.fastq \
+		-o ${output}/canu/raw.quivered.contigs.fasta \
+		${output}/canu/reads_to_canu_contigs.sorted.bam
+	fi
     fi
 fi
 

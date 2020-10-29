@@ -24,6 +24,7 @@ Comma-seperated list of haplotypes = 0_1,0_2
 Assembly directory = MsPAC/assembly
 Flanking length = 1000
 Phased bedfile = None
+Technology = ONT
 
 [SV calling params]
 SV calling directory = MsPAC/sv_calling

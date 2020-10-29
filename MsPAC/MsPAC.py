@@ -49,6 +49,7 @@ class Pipeline(object):
         self.assembly_directory = None
         self.flanking_length = None
         self.max_block_length = None
+        self.tech = None
         ## Non user options
         self.hap0_assembly_fa = None
         self.hap0_assembly_fq = None
@@ -121,6 +122,7 @@ class Pipeline(object):
             [("min_phased_block",config.get("Assembly params",'Minimum phased block length')),
              ("phased_bedfile",config.get("Assembly params",'Phased bedfile')),
              ("windows_to_assemble",[]),
+             ("tech",config.get("Assembly params",'Technology')),
              ("haps_to_assemble",config.get("Assembly params",'Comma-seperated list of haplotypes')),
              ("phased_bamfile",os.path.abspath(config.get("Phase-bam params",'output phased bamfile'))),
              ("flanking_length",int(config.get("Assembly params",'Flanking length'))),
