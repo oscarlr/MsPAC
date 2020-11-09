@@ -51,6 +51,7 @@ then
 	-p raw \
 	-d ${output}/canu \
 	contigFilter="2 1000 1.0 1.0 2" \
+	minInputCoverage=0 \
 	corMinCoverage=0 \
 	stopOnLowCoverage=0 \
 	minThreads=${threads} \
