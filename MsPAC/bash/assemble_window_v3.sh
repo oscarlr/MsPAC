@@ -21,32 +21,32 @@ tech=${17}
 
 if [ "${tech}" == "ONT" ]
 then
-    canu_tech="-nanopore-raw"
+    canu_tech="-nanopore"
 fi
 
 if [ "${tech}" == "PACB" ]
 then
-    canu_tech="-pacbio-raw"
+    canu_tech="-pacbio"
 fi
 
 
 if [ "${hap}" == "0_1" ]
 then
-    samtools view ${subreads_to_ref} -r 0 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' > ${output}/reads.fasta
-    samtools view ${subreads_to_ref} -r 1 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' >> ${output}/reads.fasta
+    samtools view -F 3884 ${subreads_to_ref} -r 0 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' > ${output}/reads.fasta
+    samtools view -F 3884 ${subreads_to_ref} -r 1 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' >> ${output}/reads.fasta
 elif [ "${hap}" == "0_2" ]
 then
-    samtools view ${subreads_to_ref} -r 0 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' > ${output}/reads.fasta
-    samtools view ${subreads_to_ref} -r 2 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' >> ${output}/reads.fasta
+    samtools view -F 3884 ${subreads_to_ref} -r 0 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' > ${output}/reads.fasta
+    samtools view -F 3884 ${subreads_to_ref} -r 2 ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' >> ${output}/reads.fasta
 else
-    samtools view ${subreads_to_ref} -r ${hap} ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' > ${output}/reads.fasta
+    samtools view -F 3884 ${subreads_to_ref} -r ${hap} ${chrom}:${start}-${end} | awk '{ print ">"$1"\n"$10}' > ${output}/reads.fasta
 fi
 
 samtools faidx ${output}/reads.fasta
 
 if [ ! -s ${output}/canu/raw.contigs.fasta ]
 then    
-    ##rm -fr ${output}/canu
+    #rm -fr ${output}/canu
     canu \
 	-p raw \
 	-d ${output}/canu \

@@ -25,14 +25,18 @@ class PhasedBlocks():
 class HaplotypeAssembly(Pipeline):
     def __init__(self,configfile):
         Pipeline.__init__(self,configfile,"assembly")
-        if self.tech not in ["ONT","PACB","NONE"]:
-            sys.exit("Assign tech in config file to ONT or PACB")
         
     def get_read_groups_regions(self):
         read_groups = ["0","1","2","0_1","0_2"]
         regions = dict.fromkeys(read_groups,{})
         samfile = pysam.AlignmentFile(self.phased_bamfile)
         for read in samfile:
+            if read.is_secondary:
+                continue
+            if read.is_supplementary:
+                continue
+            if read.is_unmapped:
+                continue
             read_group = read.get_tag("RG")
             chrom = samfile.get_reference_name(read.reference_id)
             ref_start = read.reference_start
