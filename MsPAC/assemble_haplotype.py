@@ -27,8 +27,13 @@ class HaplotypeAssembly(Pipeline):
         Pipeline.__init__(self,configfile,"assembly")
         
     def get_read_groups_regions(self):
-        read_groups = ["0","1","2","0_1","0_2"]
-        regions = dict.fromkeys(read_groups,{})
+        regions = {
+            "0": {},
+            "1": {},
+            "2": {},
+            "0_1": {},
+            "0_2": {}
+        }
         samfile = pysam.AlignmentFile(self.phased_bamfile)
         for read in samfile:
             if read.is_secondary:
