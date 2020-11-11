@@ -8,6 +8,7 @@ from MsPAC import Pipeline
 
 class PhasedBlocks():
     def __init__(self,line,min_phased_block,haps_to_assemble):
+        min_cov = 5
         self.line = line
         line = line.rstrip().split('\t')
         self.chrom = line[0]
@@ -15,11 +16,14 @@ class PhasedBlocks():
         self.end = int(line[2])
         self.hap = str(line[3])
         self.comp_cost = line[4]
+        self.cov = float(line[5])
         self.length = self.end - self.start
         self.assemble = True
         if self.length < int(min_phased_block):
             self.assemble = False
         if self.hap not in haps_to_assemble.split(','):
+            self.assemble = False
+        if self.cov < min_cov:
             self.assemble = False
 
 class HaplotypeAssembly(Pipeline):
@@ -73,15 +77,33 @@ class HaplotypeAssembly(Pipeline):
                 merged_regions.append(higher)
         return merged_regions
 
-    def break_long_regions(self,regions):
+    def merge_regions_coverage(self,regions,merged_regions):
+        bases = {}
+        regions_used = set()
+        sorted_by_lower_bound = sorted(regions, key=lambda tup: tup[0])
+        for m_start, m_end in merged_regions:
+            bases[(m_start,m_end)] = 0
+            for r_start, r_end in sorted_by_lower_bound:
+                a = [m_start,m_end]
+                b= [r_start,r_end]
+                bases_overlapping = max(0, min(a[1], b[1]) - max(a[0], b[0]))
+                if bases_overlapping > 0:
+                    bases[(m_start,m_end)] += (r_end - r_start)
+                    regions_used.add((r_start,r_end))
+            bases[(m_start,m_end)] = bases[(m_start,m_end)]/float((m_end - m_start))
+        return bases
+                    
+    def break_long_regions(self,regions,coverage):
         broken_regions = []
+        broken_coverage = {}
         for start,end in regions:
             for new_start in range(start,end,self.max_block_length):
                 new_end = new_start + self.max_block_length
                 if new_end > end:
                     new_end = end
                 broken_regions.append((new_start,new_end))
-        return broken_regions
+                broken_coverage[(new_start,new_end)] = coverage[(start,end)]
+        return (broken_regions,broken_coverage)
 
     # Max block length
     def create_phased_bedfile(self):
@@ -91,15 +113,17 @@ class HaplotypeAssembly(Pipeline):
             for read_group in read_group_regions:
                 for chrom in read_group_regions[read_group]:
                     merged_regions_pre_broken = self.merge_regions(read_group_regions[read_group][chrom])
+                    merged_regions_coverage_p_b = self.merge_regions_coverage(read_group_regions[read_group][chrom],merged_regions_pre_broken)
                     if self.max_block_length == None:
                         merged_regions = merged_regions_pre_broken
+                        merged_regions_coverage = merged_regions_coverage_p_b
                     else:
-                        merged_regions = self.break_long_regions(merged_regions_pre_broken)
+                        merged_regions,merged_regions_coverage = self.break_long_regions(merged_regions_pre_broken,merged_regions_coverage_p_b)                        
                     for start,end in merged_regions:
                         comp_cost = "low"
                         if end - start > window_size:
                             comp_cost = "high"
-                        out = [chrom,start,end,read_group,comp_cost]
+                        out = [chrom,start,end,read_group,comp_cost,merged_regions_coverage[(start,end)]]
                         fh.write("%s\n" % "\t".join(map(str,out)))
                         
     def load_haplotype_blocks(self):
